@@ -1,0 +1,342 @@
+/* General Styles */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+    margin: 0;
+  }
+  
+  .form-container {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+  }
+  
+  /* Headings */
+  h1, h2 {
+    text-align: center;
+  }
+  
+  /* Two Columns Layout */
+  .two-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; /* Adds space between columns */
+    margin-top: 20px;
+  }
+  
+  .column {
+    flex: 1;
+    background: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0 10px; /* Adjust space between columns */
+  }
+  
+  /* Input Fields */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="tel"]:focus,
+  select:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  /* Buttons */
+  button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-size: 16px;
+  }
+  
+  button:focus {
+    outline: none;
+  }
+  
+  button:hover {
+    background-color: #0056b3;
+  }
+  
+  .add-button,
+  .submit-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .add-button:hover,
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Risk and Opportunity Items */
+  .risk-container,
+  .opportunity-container {
+    margin-top: 10px;
+  }
+  
+  .risk-item,
+  .opportunity-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .risk-item input,
+  .opportunity-item input {
+    width: calc(100% - 40px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-right: 10px;
+  }
+  
+  .risk-item button,
+  .opportunity-item button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+  }
+  
+  .risk-item button:hover,
+  .opportunity-item button:hover {
+    background-color: #c82333;
+  }
+  
+  /* Checkbox Group */
+  .checkbox-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .checkbox-group label {
+    margin-bottom: 8px;
+  }
+
+/*Circulo dorado*/
+
+.form-column, .circle-column {
+    flex: 1;
+    padding: 20px;
+}
+.form-column {
+    display: flex;
+    flex-direction: column;
+}
+.circle-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    margin: auto;
+}
+.circle {
+    border: 2px solid gold;
+    border-radius: 50%;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.circle-inner {
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+}
+.circle-middle {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    left: 10%;
+}
+.circle-outer {
+    width: 100%;
+    height: 100%;
+}
+.arrow {
+    position: absolute;
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+}
+.arrow.porque {
+    top: 10%;
+    left: -60px;
+    border-bottom: 10px solid black;
+    transform: rotate(-90deg);
+}
+.arrow.como {
+    top: 45%;
+    left: -60px;
+    border-bottom: 10px solid black;
+    transform: rotate(-90deg);
+}
+.arrow.que {
+    top: 80%;
+    left: -60px;
+    border-bottom: 10px solid black;
+    transform: rotate(-90deg);
+}
+
+.book-description-container {
+  background-color: #f0f4f8;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.book-description {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.book-description h1 {
+  font-size: 2rem;
+  color: #333;
+}
+
+.book-description p {
+  font-size: 1.2rem;
+  color: #666;
+  margin: 10px 0;
+}
+
+.explore-button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.explore-button:hover {
+  background-color: #0056b3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+section {
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+/* Sección 1 */
+.section-estramipyme-eafit {
+  display: flex;
+  justify-content: space-between;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+}
+
+.estramipyme, .eafit {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Sección 2 */
+.section-presentacion {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ccc;
+  padding: 20px;
+}
+
+.presentacion-libro {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.descargable {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+/* Sección 3 */
+.section-libro {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.portada img {
+  max-width: 200px;
+  height: auto;
+}
+
+.detalle-libro {
+  flex-grow: 1;
+  margin-left: 20px;
+}
+
+.btn-descarga {
+  display: inline-block;
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  text-decoration: none;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.reseña {
+  font-size: 16px;
+  line-height: 1.5;
+}
+

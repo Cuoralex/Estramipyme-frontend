@@ -13,6 +13,7 @@ import { TestComponent } from './components/test/test.component';
 import { EstadoPruebaComponent } from './components/estado-prueba/estado-prueba.component';
 import { PruebasAdminComponent } from './views/pruebas-admin/pruebas-admin.component';
 import { PruebaDetailsComponent } from './views/prueba-details/prueba-details.component';
+import { FormComponent } from './components/form/form.component';
 
 
 export const routes: Routes = [
@@ -45,7 +46,7 @@ export const routes: Routes = [
     {path: 'login', component: LoginComponent},
     {path: 'landing-page', component: LandingPageComponent},
     { path: 'setting', component: SettingComponent },
-    
+    { path: 'formulario', component: FormComponent },    
     {
         path: '',
         redirectTo: 'landing-page',

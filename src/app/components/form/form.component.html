@@ -1,0 +1,676 @@
+<!-- Sección 1: Estramipyme y Eafit -->
+<section class="section-estramipyme-eafit">
+  <div class="estramipyme">Estramipyme</div>
+  <div class="eafit">EAFIT</div>
+</section>
+
+<!-- Sección 2: Presentación del Libro y Descargable -->
+<section class="section-presentacion">
+  <div class="presentacion-libro">Presentación del Libro</div>
+  <div class="presentacion-libro">Descarga libre</div>
+</section>
+
+<!-- Sección 3: Portada del libro, botón de descarga y reseña -->
+<section class="flex justify-center items-center my-8">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full">
+    <!-- Portada del libro -->
+    <div class="portada flex justify-center">
+      <img src="/../../../../libro.jpg" alt="Portada del Libro" class="w-full h-auto max-w-sm">
+    </div>
+    <!-- Detalle del libro -->
+    <div class="detalle-libro flex flex-col justify-center">
+      <h2 class="text-2xl font-semibold mb-4">Estramipyme: Metodología fácil y ágil para diseñar una estrategia
+        competitiva</h2>
+      <p class="reseña text-lg text-gray-700 mb-6">
+        Sumérgete en el apasionante mundo del desarrollo organizacional con este libro que ofrece herramientas y
+        estrategias para el crecimiento empresarial. Aprende cómo identificar y aprovechar oportunidades, gestionar
+        riesgos y establecer un modelo de negocio coherente.
+      </p>
+      <a href="https://editorial.eafit.edu.co/index.php/editorial/catalog/book/195"
+        class="btn-descarga inline-block bg-blue-500 text-white py-3 px-6 rounded hover:bg-blue-700 transition-colors duration-300"
+        target="_blank">Descargar</a>
+    </div>
+  </div>
+</section>
+
+<!-- 
+  <div class="book-description">
+    <h1>Conoce el libro "Desarrollo Organizacional"</h1>
+    <p>
+      Sumérgete en el apasionante mundo del desarrollo organizacional con este libro que ofrece
+      herramientas y estrategias para el crecimiento empresarial. Aprende cómo identificar y
+      aprovechar oportunidades, gestionar riesgos y establecer un modelo de negocio coherente.
+    </p>
+    <a href="https://editorial.eafit.edu.co/index.php/editorial/catalog/book/195" target="_blank" class="explore-button">
+      Explora más
+    </a>
+  </div>
+</section> -->
+
+<section class="form-container">
+  <h2 class="text-2xl font-semibold mb-4">Formulario de Datos Obligatorios</h2>
+  <form>
+    <h2>Datos Generales del Negocio</h2>
+    <div *ngIf="isNaturalPerson(); else legalPersonTemplate">
+      <h2>Datos de la Persona Natural</h2>
+      <p><strong>Nombre:</strong> {{ user.NaturalPersonName }}</p>
+      <p><strong>Dirección:</strong> {{ user.NaturalPersonAddress }}</p>
+      <p><strong>Teléfono:</strong> {{ user.NaturalPersonPhone }}</p>
+      <p><strong>Email:</strong> {{ user.NaturalPersonEmail }}</p>
+    </div>
+
+    <ng-template #legalPersonTemplate>
+      <h2>Datos de la Persona Jurídica</h2>
+      <p><strong>Nombre de la Empresa:</strong> {{ user.LegalPersonCompanyName }}</p>
+      <p><strong>Dirección:</strong> {{ user.LegalPersonAddress }}</p>
+      <p><strong>Teléfono:</strong> {{ user.LegalPersonPhone }}</p>
+      <p><strong>Email:</strong> {{ user.LegalPersonEmail }}</p>
+    </ng-template>
+
+    <!--Macroentorno-->
+
+    <h2>Análisis macroentorno</h2>
+
+    <!-- Sección de Riesgos y Oportunidades -->
+
+    <div class="form-container">
+      <div class="two-columns">
+        <div class="column">
+          <h2>Riesgos</h2>
+          <div class="risk-container">
+            <div *ngFor="let risk of risks" class="risk-item">
+              <input type="text" [name]="'risk' + risk.id" [placeholder]="risk.text" required>
+              <button type="button" (click)="removeRisk(risk.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addRisk()">+</button>
+        </div>
+        <div class="column">
+          <h2>Oportunidades</h2>
+          <div class="opportunity-container">
+            <div *ngFor="let opportunity of opportunities" class="opportunity-item">
+              <input type="text" [name]="'opportunity' + opportunity.id" [placeholder]="opportunity.text" required>
+              <button type="button" (click)="removeOpportunity(opportunity.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addOpportunity()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <br><br>
+    <h2>Análisis industria o sector</h2>
+
+    <!-- Sección de Riesgos y Oportunidades -->
+    <div class="form-container">
+      <div class="two-columns">
+        <div class="column">
+          <h2>Riesgos</h2>
+          <div class="risk-container">
+            <div *ngFor="let risk of risks" class="risk-item">
+              <input type="text" [name]="'risk' + risk.id" [placeholder]="risk.text" required>
+              <button type="button" (click)="removeRisk(risk.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addRisk()">+</button>
+        </div>
+        <div class="column">
+          <h2>Oportunidades</h2>
+          <div class="opportunity-container">
+            <div *ngFor="let opportunity of opportunities" class="opportunity-item">
+              <input type="text" [name]="'opportunity' + opportunity.id" [placeholder]="opportunity.text" required>
+              <button type="button" (click)="removeOpportunity(opportunity.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addOpportunity()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!--Circulo Dorado-->
+    <div class="container">
+      <div class="form-column">
+        <div class="Circulo dorado">
+          <label for="porque">¿Por qué/para qué?:(propósito del negocio)</label><br>
+          <input type="text" id="porque" name="proposito del negocio" required><br><br>
+
+          <label for="como">¿Cómo?:(propuesta de valor)</label><br>
+          <input type="text" id="como" name="propuesta de valor" required><br><br>
+
+          <label for="que">¿Qué?:(productos y servicios)</label><br>
+          <input type="text" id="que" name="productos y servicios" required><br><br>
+        </div>
+      </div>
+      <div class="circle-column">
+        <div class="circle-container">
+          <div class="circle circle-inner">
+            <div></div>
+            <div class="arrow porque"></div>
+          </div>
+          <div class="circle circle-middle">
+            <div></div>
+            <div class="arrow como"></div>
+          </div>
+          <div class="circle circle-outer">
+            <div></div>
+            <div class="arrow que"></div>
+          </div>
+        </div>      
+      </div>
+    </div>
+
+    <br><br>
+    <h2>Análisis drink up</h2>
+
+    <!-- Sección de Riesgos y Oportunidades -->
+    <div class="form-container">
+      <div class="two-columns">
+        <div class="column">
+          <h2>Macrotendencia</h2>
+          <div class="risk-container">
+            <div *ngFor="let risk of risks" class="risk-item">
+              <input type="text" [name]="'risk' + risk.id" [placeholder]="risk.text" required>
+              <button type="button" (click)="removeRisk(risk.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addRisk()">+</button>
+        </div>
+        <div class="column">
+          <h2>Tendencia</h2>
+          <div class="opportunity-container">
+            <div *ngFor="let opportunity of opportunities" class="opportunity-item">
+              <input type="text" [name]="'opportunity' + opportunity.id" [placeholder]="opportunity.text" required>
+              <button type="button" (click)="removeOpportunity(opportunity.id)">-</button>
+            </div>
+          </div>
+          <button type="button" class="add-button" (click)="addOpportunity()">+</button>
+        </div>
+      </div>
+    </div><br><br>
+
+    <!--Radar estratégico-->
+    <h2>Radar estratégico</h2>
+
+    <fieldset>
+      <legend>Conocimiento del Cliente</legend>
+      <label>¿Cómo describirías tu conocimiento del cliente?</label><br>
+      <input type="radio" id="cc1" name="conocimiento_cliente" value="1">
+      <label for="cc1">Se le dificulta describir quién es su cliente.</label><br>
+      <input type="radio" id="cc2" name="conocimiento_cliente" value="2">
+      <label for="cc2">Solo describe al cliente desde una segmentación tradicional de mercado (estrato, edad,
+        etc.).</label><br>
+      <input type="radio" id="cc3" name="conocimiento_cliente" value="3">
+      <label for="cc3">Conoce su cliente, lo describe desde su estilo de vida, hábitos de consumo, comportamientos,
+        tareas por hacer, dolores, alegrías.</label><br>
+      <input type="radio" id="cc4" name="conocimiento_cliente" value="4">
+      <label for="cc4">Identifica, además, si su negocio atiende solo uno o varios tipos de clientes. Diferencia en su
+        negocio al consumidor, el comprador y/o el cliente.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Conocimiento del Negocio</legend>
+      <label>¿Cómo definirías tu conocimiento del negocio?</label><br>
+      <input type="radio" id="cn1" name="conocimiento_negocio" value="1">
+      <label for="cn1">Se le dificulta definir el negocio en el que está (quién es el cliente, qué tarea resuelve y
+        cuáles son los productos o servicios que ofrece).</label><br>
+      <input type="radio" id="cn2" name="conocimiento_negocio" value="2">
+      <label for="cn2">Identifica en qué negocio está pero no cómo se diferencia de sus competidores.</label><br>
+      <input type="radio" id="cn3" name="conocimiento_negocio" value="3">
+      <label for="cn3">Identifica su propuesta de valor y cómo su negocio se diferencia de la competencia en productos,
+        servicios, modelo de negocio, experiencia de cliente o valor de la marca.</label><br>
+      <input type="radio" id="cn4" name="conocimiento_negocio" value="4">
+      <label for="cn4">Tiene claridad sobre el modelo de negocio de su empresa y cómo puede transformarlo o
+        evolucionarlo.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Gestión del Negocio</legend>
+      <label>¿Cómo describirías tu gestión del negocio?</label><br>
+      <input type="radio" id="gn1" name="gestion_negocio" value="1">
+      <label for="gn1">La información del negocio está en la cabeza del dueño.</label><br>
+      <input type="radio" id="gn2" name="gestion_negocio" value="2">
+      <label for="gn2">Tiene una estructura del negocio básica (roles y tareas de cada cargo), así como una visión de
+        su negocio a un año (objetivos y estrategias).</label><br>
+      <input type="radio" id="gn3" name="gestion_negocio" value="3">
+      <label for="gn3">Tiene roles y funciones definidas, información organizada en sistemas contables, bases de datos
+        de clientes y prospectos. Visión de negocio a dos años.</label><br>
+      <input type="radio" id="gn4" name="gestion_negocio" value="4">
+      <label for="gn4">Define objetivos y estrategias para ejecutar su visión de negocio a tres años.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Identificación de Oportunidades</legend>
+      <label>¿Qué tan bien identificas las oportunidades para tu negocio?</label><br>
+      <input type="radio" id="io1" name="identificacion_oportunidades" value="1">
+      <label for="io1">No identifica oportunidades de mejora ni está dispuesto a cambiar.</label><br>
+      <input type="radio" id="io2" name="identificacion_oportunidades" value="2">
+      <label for="io2">Identifica mejoras operativas o de servicio, pero no identifica oportunidades de negocio,
+        producto, servicio o de experiencia del cliente.</label><br>
+      <input type="radio" id="io3" name="identificacion_oportunidades" value="3">
+      <label for="io3">Identifica oportunidades de negocio, producto, servicio y/o experiencia de cliente a partir de
+        macrotendencias y tendencias del consumidor, cliente o industria.</label><br>
+      <input type="radio" id="io4" name="identificacion_oportunidades" value="4">
+      <label for="io4">Las oportunidades que identifica son insumos para la evolución o transformación de su modelo de
+        negocio.</label>
+    </fieldset>
+    <br>
+
+    <fieldset>
+      <legend>Conocimiento del Cliente</legend>
+      <label>¿Qué tan bien conoces a tu cliente?</label><br>
+      <input type="radio" id="kc1" name="conocimiento_cliente" value="1">
+      <label for="kc1">Se le dificulta describir quién es su cliente.</label><br>
+      <input type="radio" id="kc2" name="conocimiento_cliente" value="2">
+      <label for="kc2">Solo describe al cliente desde una segmentación tradicional de mercado (estrato, edad,
+        etc.).</label><br>
+      <input type="radio" id="kc3" name="conocimiento_cliente" value="3">
+      <label for="kc3">Conoce su cliente, lo describe desde su estilo de vida, hábitos de consumo, comportamiento,
+        tareas por hacer, dolores, alegrías.</label><br>
+      <input type="radio" id="kc4" name="conocimiento_cliente" value="4">
+      <label for="kc4">Identifica, además, si su negocio atiende solo uno o varios tipos de clientes. Diferencia en su
+        negocio al consumidor, el comprador y/o el cliente.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Conocimiento del Negocio</legend>
+      <label>¿Qué tan bien conoces tu negocio?</label><br>
+      <input type="radio" id="kn1" name="conocimiento_negocio" value="1">
+      <label for="kn1">Se le dificulta definir el negocio en el que está (quién es el cliente, qué tarea resuelve y
+        cuáles son los productos o servicios que ofrece).</label><br>
+      <input type="radio" id="kn2" name="conocimiento_negocio" value="2">
+      <label for="kn2">Identifica en qué negocio está pero no cómo se diferencia de sus competidores.</label><br>
+      <input type="radio" id="kn3" name="conocimiento_negocio" value="3">
+      <label for="kn3">Identifica los recursos, actividades y aliados claves de su negocio.</label><br>
+      <input type="radio" id="kn4" name="conocimiento_negocio" value="4">
+      <label for="kn4">Identifica el negocio en el que está y lo que sabe hacer mejor que sus competidores (capacidades
+        distintivas). Además, mantiene relaciones sanas con sus aliados claves.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Coherencia del Modelo de Negocio</legend>
+      <label>¿Qué tan coherente es tu modelo de negocio?</label><br>
+      <input type="radio" id="cm1" name="coherencia_modelo_negocio" value="1">
+      <label for="cm1">La propuesta de valor no es clara y se limita a la descripción del producto.</label><br>
+      <input type="radio" id="cm2" name="coherencia_modelo_negocio" value="2">
+      <label for="cm2">Existe una propuesta de valor definida y clara, pero ésta no es plenamente coherente con el
+        perfil del cliente.</label><br>
+      <input type="radio" id="cm3" name="coherencia_modelo_negocio" value="3">
+      <label for="cm3">Existe coherencia entre la propuesta de valor y el perfil del cliente, pero no con los demás
+        elementos del modelo de negocio.</label><br>
+      <input type="radio" id="cm4" name="coherencia_modelo_negocio" value="4">
+      <label for="cm4">Existe coherencia entre la definición del cliente, la propuesta de valor y los demás elementos
+        del modelo de negocio.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Alineación en la Comunicación Interna</legend>
+      <label>¿Qué tan alineada está la comunicación interna en tu empresa?</label><br>
+      <input type="radio" id="ai1" name="alineacion_comunicacion_interna" value="1">
+      <label for="ai1">Lo que comunica la administración es diferente a lo que comunica el nivel operativo.</label><br>
+      <input type="radio" id="ai2" name="alineacion_comunicacion_interna" value="2">
+      <label for="ai2">Solo la administración conoce el propósito común.</label><br>
+      <input type="radio" id="ai3" name="alineacion_comunicacion_interna" value="3">
+      <label for="ai3">Las personas entrevistadas están alineadas en los objetivos de su área funcional, pero no con el
+        propósito común.</label><br>
+      <input type="radio" id="ai4" name="alineacion_comunicacion_interna" value="4">
+      <label for="ai4">El área administrativa y operativa le apuntan a un propósito común.</label>
+    </fieldset>
+    <br>
+    <fieldset>
+      <legend>Salud Financiera</legend>
+      <label>¿Cómo describirías la salud financiera de tu empresa?</label><br>
+      <input type="radio" id="sf1" name="salud_financiera" value="1">
+      <label for="sf1">No se lleva información financiera de manera sistemática.</label><br>
+      <input type="radio" id="sf2" name="salud_financiera" value="2">
+      <label for="sf2">Los resultados financieros no son positivos; la empresa presenta dificultades, principalmente de
+        liquidez.</label><br>
+      <input type="radio" id="sf3" name="salud_financiera" value="3">
+      <label for="sf3">Si bien los resultados financieros no son positivos, se llevan a cabo acciones deliberadas para
+        mitigar los impactos y se tiene claridad de la ruta financiera por seguir.</label><br>
+      <input type="radio" id="sf4" name="salud_financiera" value="4">
+      <label for="sf4">Los ingresos de operación son muy superiores a los costos de operación, quedando un margen
+        operacional que permitirá crecer en el futuro.</label>
+    </fieldset>
+
+    <section id="about" class="p-8">
+      <h2 class="text-3xl font-bold text-center">Formulario de Diagnóstico</h2>
+      <p class="mt-4 text-center">A continuación, encontraras varias preguntas relacionadas con áreas de tu
+        organización, las cuales tienen opciones múltiples de respuesta y deberás calificar haciendo uso de cuatro
+        categorías. VALIOSO, RARO, INIMITABLE Y DIFICIL DE SUSTITUIR. Para cada categoría, tendremos una escala de
+        calificación entre el 1 y el 4, la cual evidenciaras desplegando las opciones de respuesta.</p>
+      <section id="about" class="p-8">
+
+        <form method="POST" action="#" class="max-w-4xl mx-auto p-4">
+          <h3 class="font-bold p-2">COMERCIAL</h3>
+          <table class="table-auto w-full border-collapse border border-gray-300 dark:border-gray-600">
+            <thead>
+              <tr>
+                <th class="border border-gray-300 dark:border-gray-600 p-2 text-left">Preguntas</th>
+                <th class="border border-gray-300 dark:border-gray-600 p-2 text-center">Valioso</th>
+                <th class="border border-gray-300 dark:border-gray-600 p-2 text-center">Rareza</th>
+                <th class="border border-gray-300 dark:border-gray-600 p-2 text-center">Inimitable</th>
+                <th class="border border-gray-300 dark:border-gray-600 p-2 text-center">Dificil de sustituir</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo considera sus activos financieros
+                  tangibles disponibles para la empresa?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question1_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question1_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question1_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question1_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo influyen los activos organizacionales
+                  en la capacidad de la empresa para brindar un servicio al cliente eficiente?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="4">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo afectan los activos organizacionales
+                  al diseño y desarrollo de propuestas comerciales?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="4">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question2_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo impactan los intangibles
+                  reputacionales en el relacionamiento con los clientes?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question3_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="4">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question3_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question3_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question3_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo influye el reconocimiento de marca en
+                  los intangibles reputacionales?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question4_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="4">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question4_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question4_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question4_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+
+              <tr>
+                <td class="border border-gray-300 dark:border-gray-600 p-2">¿Cómo afecta la reputación en el sector a
+                  los intangibles reputacionales de la empresa?</td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question5_1"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No impacta el indicador</option>
+                    <option value="2">2. Impacta un poco el indicador</option>
+                    <option value="3">3. Impacta directamente el indicador</option>
+                    <option value="4">4. Impacta significativamente el indicador</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question5_2"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es rara la capacidad es común en el mercado que compito</option>
+                    <option value="2">2. Es rara Esta capacidad la tienen los líderes del mercado en el que compito
+                    </option>
+                    <option value="3">3. Es muy rara Esta capacidad la tienen otras empresas, pero no existe en el
+                      mercado en el que compito</option>
+                    <option value="4">4. Es extremadamente rara esta capacidad. Nadie en el mercado o en esta categoría
+                      tiene esta capacidad</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question5_3"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. Me pueden copiar en menos de un año. No se requiere conocimiento técnico ni
+                      inversión</option>
+                    <option value="2">2. Me pueden copiar en 2 y 3 años. Se requiere conocimiento técnico básico e
+                      inversiones bajas</option>
+                    <option value="3">3. Me pueden copiar, pero tardarán entre 5 y 10 años. Se requiere conocimiento
+                      técnico e inversiones elevadas</option>
+                    <option value="4">4. Me pueden copiar, pero tardarán más de 10 años, se requiere alto conocimiento
+                      técnico y niveles de inversión muy altos</option>
+                  </select>
+                </td>
+                <td class="border border-gray-300 dark:border-gray-600 p-2 text-center">
+                  <select name="question5_4"
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600">
+                    <option value="1">1. No es difícil de sustituir. Los competidores con una capacidad diferente pueden
+                      lograr el mismo beneficio</option>
+                    <option value="2">2. Es difícil de sustituir Mi competencia con una capacidad diferente, logra
+                      resultados similares a los míos</option>
+                    <option value="3">3. Es extremadamente difícil de sustituir Mi competencia con una capacidad
+                      diferente, logra resultados en la misma dirección, pero se alejan mucho de los míos</option>
+                    <option value="4">3. Es imposible de sustituir Mi competencia no puede lograr el mismo beneficio con
+                      una capacidad diferente</option>
+                  </select>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <br>
+        </form>
+      </section>
+    </section>
+    <br><br><br>
+
+    <button type="submit">Enviar</button>
+  </form>
+</section>
