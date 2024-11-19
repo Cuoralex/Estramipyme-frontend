@@ -10,7 +10,7 @@ import { Admin } from '../models/admin';
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/companies';
-  private baseUrlAdmin= "http://localhost:8080/admins"
+  private baseUrlAdmin='http://localhost:8080/admins';
 
   isLoggedIn:boolean=false;
 
@@ -21,12 +21,14 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(`${this.baseUrl}?email=${email}`).pipe(
+    return this.http.get<User[]>(`${this.baseUrl}?email=${email}`).pipe(  // Se usan comillas invertidas y `${}` para interpolar
       map(usuarios => {
+        console.log('Usuarios encontrados:', usuarios);  // Verifica qué usuarios se están recuperando
         if (usuarios.length > 0) {
           const user = usuarios[0];
+          console.log('Usuario encontrado:', user);
           // Compara la contraseña ingresada con la almacenada en la base de datos
-          if (password === password) {
+          if (password === user.password) {  // Asegúrate de comparar la contraseña correctamente
             return user;
           } else {
             return null;
@@ -38,32 +40,33 @@ export class AuthService {
       catchError(() => of(null))
     );
   }
-
-  loginAdmin(email:string,password:string): Observable<User|null>{
-    return this.http.get<Admin[]>(`${this.baseUrlAdmin}?email=${email}`).pipe(
+  
+  loginAdmin(email: string, password: string): Observable<Admin | null> {
+    return this.http.get<Admin[]>(`${this.baseUrlAdmin}?email=${email}`).pipe(  // Se usan comillas invertidas y `${}` para interpolar
       map(admins => {
-        if (admins.length > 0){
+        if (admins.length > 0) {
           const admin = admins[0];
-
-          if(password===admin.password){
+  
+          // Asegúrate de que la contraseña coincida y que sea un admin
+          if (password === admin.password) {
             return admin;
-          }else{
+          } else {
             return null;
           }
-        }else{
+        } else {
           return null;
         }
       }),
-      catchError(()=> of(null))
+      catchError(() => of(null))
     );
   }
-
+  
   getUser(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
+    return this.http.get<User>(`${this.baseUrl}/${id}`);  // Se usan comillas invertidas y `${}` para interpolar
   }
+  
 
   getLogin(){
     return this.isLoggedIn
   }
 }
-
