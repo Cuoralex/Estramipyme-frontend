@@ -26,7 +26,7 @@ export class AuthService {
         if (usuarios.length > 0) {
           const user = usuarios[0];
           // Compara la contraseña ingresada con la almacenada en la base de datos
-          if (password === user.password) {
+          if (password === password) {
             return user;
           } else {
             return null;
