@@ -6,7 +6,7 @@ export interface User {
   typeUser?: string | null | undefined | number;
   sizeCompany?: string | undefined | number;
   sector?: string | undefined | number;
-  identification?: string;
+  registerDate?: string;
   isBookDonwloaded?: boolean | undefined;
   isTestDone?: boolean;
 }
