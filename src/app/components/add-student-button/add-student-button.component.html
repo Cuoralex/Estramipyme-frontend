@@ -1,5 +1,8 @@
 <div class="p-4">
+  <!-- Botón para mostrar/ocultar el formulario -->
   <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="showForm = !showForm">Agregar Estudiante</button>
+  
+  <!-- Formulario de búsqueda -->
   <form *ngIf="showForm" [formGroup]="studentForm" (ngSubmit)="searchStudent()" class="mt-4 space-y-4">
     <div>
       <label for="studentId" class="block text-sm font-medium text-gray-700">ID Estudiante:</label>
@@ -11,7 +14,22 @@
     </div>
     <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Buscar</button>
   </form>
-  <button *ngIf="studentFound" (click)="addStudentToProject()" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded">Agregar al Proyecto</button>
+
+  <!-- Formulario de asignación -->
+  <div *ngIf="showAssignSection" class="mt-6 space-y-4">
+    <h3 class="text-lg font-medium text-gray-900">Asignar Estudiante</h3>
+    <form [formGroup]="assignForm" (ngSubmit)="assignToProfessorAndCompany()" class="space-y-4">
+      <div>
+        <label for="professor" class="block text-sm font-medium text-gray-700">Profesor:</label>
+        <input id="professor" formControlName="professor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+      <div>
+        <label for="company" class="block text-sm font-medium text-gray-700">Compañía:</label>
+        <input id="company" formControlName="company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+      </div>
+      <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Asignar</button>
+    </form>
+  </div>
 
   <!-- Modal de Error -->
   <div *ngIf="showErrorModal" class="fixed z-10 inset-0 overflow-y-auto">
@@ -41,6 +59,8 @@
       <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
         <div class="bg-white p-4">
           <h3 class="text-lg leading-6 font-medium text-gray-900">Estudiante "{{ studentName }}" agregado exitosamente al proyecto.</h3>
+          <p class="text-sm mt-2 text-gray-700">Profesor Asignado: {{ assignedProfessor }}</p>
+          <p class="text-sm text-gray-700">Compañía Asignada: {{ assignedCompany }}</p>
           <div class="mt-4 flex justify-center">
             <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="closeSuccessModal()">Cerrar</button>
           </div>
