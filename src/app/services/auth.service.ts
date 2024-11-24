@@ -5,7 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { Admin } from '../models/admin';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/companies'; // URL para usuarios
@@ -31,15 +31,19 @@ export class AuthService {
    */
   login(email: string, password: string): Observable<User | null> {
     return this.http.get<User[]>(this.baseUrl).pipe(
-      map(users => {
+      map((users) => {
         // Busca un usuario con correo y contraseña coincidentes
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = users.find(
+          (u) => u.email === email && u.password === password
+        );
 
         if (user) {
           console.log('Usuario encontrado:', user);
           return user;
         } else {
-          console.log('No se encontró ningún usuario con el correo y contraseña especificados');
+          console.log(
+            'No se encontró ningún usuario con el correo y contraseña especificados'
+          );
           return null;
         }
       }),
@@ -58,15 +62,19 @@ export class AuthService {
    */
   loginAdmin(email: string, password: string): Observable<Admin | null> {
     return this.http.get<Admin[]>(this.baseUrlAdmin).pipe(
-      map(admins => {
+      map((admins) => {
         // Busca un administrador con correo y contraseña coincidentes
-        const admin = admins.find(a => a.email === email && a.password === password);
+        const admin = admins.find(
+          (a) => a.email === email && a.password === password
+        );
 
         if (admin) {
           console.log('Administrador encontrado:', admin);
           return admin;
         } else {
-          console.log('No se encontró ningún administrador con el correo y contraseña especificados');
+          console.log(
+            'No se encontró ningún administrador con el correo y contraseña especificados'
+          );
           return null;
         }
       }),
