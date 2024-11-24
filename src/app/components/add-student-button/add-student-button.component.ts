@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
@@ -8,7 +13,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-student-button.component.html',
-  styleUrls: ['./add-student-button.component.scss']
+  styleUrls: ['./add-student-button.component.scss'],
 })
 export class AddStudentButtonComponent implements OnInit {
   showForm = false;
@@ -30,12 +35,12 @@ export class AddStudentButtonComponent implements OnInit {
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.studentForm = this.fb.group({
       id: [''],
-      email: ['', Validators.email]
+      email: ['', Validators.email],
     });
 
     this.assignForm = this.fb.group({
       professor: ['', Validators.required],
-      company: ['', Validators.required]
+      company: ['', Validators.required],
     });
   }
 
@@ -82,31 +87,33 @@ export class AddStudentButtonComponent implements OnInit {
 
     const searchCriteria = id ? `id=${id}` : `email=${email}`;
 
-    this.http.get<any[]>(`http://localhost:8080/students?${searchCriteria}`).subscribe(
-      (students) => {
-        if (students.length === 0) {
+    this.http
+      .get<any[]>(`http://localhost:8080/students?${searchCriteria}`)
+      .subscribe(
+        (students) => {
+          if (students.length === 0) {
+            this.showErrorModal = true;
+            this.errorMessage = 'No existe el estudiante.';
+            this.studentFound = false;
+            this.studentId = null;
+            this.studentName = null;
+            this.studentEmail = null;
+            this.showAssignSection = false;
+          } else {
+            const student = students[0];
+            this.studentFound = true;
+            this.studentId = student.id;
+            this.studentName = student.name;
+            this.studentEmail = student.email;
+            this.showAssignSection = true;
+          }
+        },
+        (err) => {
           this.showErrorModal = true;
-          this.errorMessage = 'No existe el estudiante.';
-          this.studentFound = false;
-          this.studentId = null;
-          this.studentName = null;
-          this.studentEmail = null;
-          this.showAssignSection = false;
-        } else {
-          const student = students[0];
-          this.studentFound = true;
-          this.studentId = student.id;
-          this.studentName = student.name;
-          this.studentEmail = student.email;
-          this.showAssignSection = true;
+          this.errorMessage = 'Error al buscar el estudiante.';
+          console.error(err);
         }
-      },
-      (err) => {
-        this.showErrorModal = true;
-        this.errorMessage = 'Error al buscar el estudiante.';
-        console.error(err);
-      }
-    );
+      );
   }
 
   // Asignar estudiante a profesor y compañía
@@ -120,22 +127,27 @@ export class AddStudentButtonComponent implements OnInit {
       console.log('Compañía:', company);
 
       // Realizar la solicitud para asignar el estudiante usando PUT en lugar de PATCH
-      this.http.put(`http://localhost:8080/students/${this.studentId}`, { professor, company }).subscribe(
-        (response) => {
-          console.log('Asignación exitosa:', response);
-          this.showSuccessModal = true;
-          this.assignedProfessor = professor;
-          this.assignedCompany = company;
-          this.showAssignSection = false;
-          this.studentForm.reset();
-          this.assignForm.reset();
-        },
-        (err) => {
-          this.showErrorModal = true;
-          this.errorMessage = 'Error al asignar al estudiante.';
-          console.error('Error al asignar:', err);
-        }
-      );
+      this.http
+        .put(`http://localhost:8080/students/${this.studentId}`, {
+          professor,
+          company,
+        })
+        .subscribe(
+          (response) => {
+            console.log('Asignación exitosa:', response);
+            this.showSuccessModal = true;
+            this.assignedProfessor = professor;
+            this.assignedCompany = company;
+            this.showAssignSection = false;
+            this.studentForm.reset();
+            this.assignForm.reset();
+          },
+          (err) => {
+            this.showErrorModal = true;
+            this.errorMessage = 'Error al asignar al estudiante.';
+            console.error('Error al asignar:', err);
+          }
+        );
     }
   }
 

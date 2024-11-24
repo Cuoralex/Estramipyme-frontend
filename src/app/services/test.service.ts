@@ -1,35 +1,57 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { switchMap } from 'rxjs';
+import { catchError, of, switchMap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TestService {
+  private baseUrl = 'http://localhost:8080/tests';
+  private companyUrl = 'http://localhost:8080/companies';
 
-  private baseUrl='https://estramipyme-api.vercel.app/tests';
+  constructor(private http: HttpClient) {}
 
-  constructor(private http: HttpClient){}
-
-  registerTest(testDetails:any){
-    return this.http.get<any[]>(`${this.baseUrl}?id=${testDetails.id_empresa}`).pipe(
-      switchMap((existingTests) => {
-        if (existingTests.length > 0) {
-          // Si el test con el ID ya existe, se hace PUT para sobrescribirlo
-          return this.http.put(`${this.baseUrl}/${testDetails.id_empresa}`, testDetails);
-        } else {
-          // Si el test no existe, se hace post para crear un onuevo
-          return this.http.post(this.baseUrl, testDetails);
-        }
-      })
-    );
+  registerTest(testDetails: any) {
+    console.log('Enviando test:', testDetails);
+    return this.http
+      .get<any[]>(`${this.baseUrl}?id=${testDetails.id_empresa}`)
+      .pipe(
+        catchError((error) => {
+          console.error('Error en la búsqueda:', error);
+          // Si no encuentra el test, crear uno nuevo
+          if (error.status === 400) {
+            return of([]);
+          }
+          throw error;
+        }),
+        switchMap((existingTests) => {
+          if (existingTests && existingTests.length > 0) {
+            console.log('Test existente, actualizando...');
+            return this.http.put(
+              `${this.baseUrl}/${testDetails.id_empresa}`,
+              testDetails
+            );
+          } else {
+            console.log('Creando nuevo test...');
+            return this.http.post(this.baseUrl, testDetails);
+          }
+        }),
+        catchError((error) => {
+          console.error('Error en operación:', error);
+          throw error;
+        })
+      );
   }
 
-  updateisTestDone(user:any){
-    const url = `https://estramipyme-api.vercel.app/usuarios/${user.id}`;
-
-    return this.http.patch(url, { isTestDone: true });
-
+  updateisTestDone(user: any) {
+    console.log('Actualizando estado para usuario:', user);
+    return this.http
+      .put(`${this.companyUrl}/${user.id}/test-status`, { isTestDone: true })
+      .pipe(
+        catchError((error) => {
+          console.error('Error actualizando estado:', error);
+          throw error;
+        })
+      );
   }
-
 }
