@@ -12,6 +12,7 @@ export class AuthService {
   private baseUrlAdmin = 'http://localhost:8080/admins'; // URL para administradores
 
   isLoggedIn: boolean = false; // Indicador de sesión iniciada
+  apiUrl: any;
 
   constructor(private http: HttpClient) {}
 
@@ -92,5 +93,9 @@ export class AuthService {
    */
   getLogin(): boolean {
     return this.isLoggedIn;
+  }
+
+  getProfile(email: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/profile/${email}`);
   }
 }
