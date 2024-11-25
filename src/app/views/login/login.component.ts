@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, CommonModule, NavbarComponent],
+  imports: [ ReactiveFormsModule, CommonModule, NavbarComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -37,25 +37,23 @@ export class LoginComponent {
       const password = passwordControl?.value ?? '';
 
       this.authService.login(email, password).subscribe({
-        next: user => {
-          if (user) {
+        next: response => {
+          if (response && response.token) {
             this.authService.isLoggedIn = true;
-            this.userService.login(user);
+            this.userService.login(response.user, response.token);
             this.router.navigateByUrl("/dashboard");
           } else {
-            // Si no se encuentra usuario(empresas) va a buscar a admin
             this.authService.loginAdmin(email, password).subscribe({
               next: admin => {
                 if (admin) {
                   this.authService.isLoggedIn = true;
-                  this.userService.login(admin);
+                  this.userService.login(admin, '');
                   this.router.navigateByUrl("/dashboard-admin");
                 } else {
                   this.showMessage('Correo y/o contraseña incorrectos. Por favor, intenta nuevamente.', 'error');
                   this.setInvalidClass(emailControl, passwordControl);
                 }
               },
-              // Esto maneja el error si hay error en la petición get de admins
               error: error => {
                 console.error('Error al intentar iniciar sesión:', error);
                 this.showMessage('Ocurrió un error al intentar iniciar sesión. Por favor, intenta nuevamente.', 'error');
@@ -64,7 +62,6 @@ export class LoginComponent {
             });
           }
         },
-        // Esto maneja el error si hay un error en la petición get de usuarios
         error: error => {
           console.error('Error al intentar iniciar sesión:', error);
           this.showMessage('Ocurrió un error al intentar iniciar sesión. Por favor, intenta nuevamente.', 'error');

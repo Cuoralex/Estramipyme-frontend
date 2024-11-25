@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { catchError, map, Observable, of } from 'rxjs';
@@ -16,51 +16,32 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  /**
-   * Registra un nuevo usuario.
-   * @param userDetails Detalles del usuario.
-   */
   registerUser(userDetails: any): Observable<any> {
     return this.http.post(this.baseUrl, userDetails);
   }
 
-  /**
-   * Realiza el inicio de sesión de un usuario.
-   * @param email Correo electrónico del usuario.
-   * @param password Contraseña del usuario.
-   * @returns Un observable con el usuario si es válido, o `null` si no lo es.
-   */
-  login(email: string, password: string): Observable<User | null> {
-    return this.http.get<User[]>(this.baseUrl).pipe(
-      map(users => {
-        // Busca un usuario con correo y contraseña coincidentes
-        const user = users.find(u => u.email === email && u.password === password);
-
-        if (user) {
-          console.log('Usuario encontrado:', user);
-          return user;
+  login(email: string, password: string): Observable<{ token: string; user: User } | null> {
+    const payload = { email, password };
+    return this.http.post<{ token: string; user: User }>(`${this.baseUrl}/login`, payload).pipe(
+      map(response => {
+        if (response && response.token) {
+          console.log('Usuario autenticado:', response.user);
+          return response;
         } else {
-          console.log('No se encontró ningún usuario con el correo y contraseña especificados');
+          console.log('Credenciales incorrectas');
           return null;
         }
       }),
       catchError(() => {
-        console.error('Error al obtener los usuarios');
-        return of(null); // Manejo de errores
+        console.error('Error al autenticar al usuario');
+        return of(null);
       })
     );
   }
 
-  /**
-   * Realiza el inicio de sesión de un administrador.
-   * @param email Correo electrónico del administrador.
-   * @param password Contraseña del administrador.
-   * @returns Un observable con el administrador si es válido, o `null` si no lo es.
-   */
   loginAdmin(email: string, password: string): Observable<Admin | null> {
     return this.http.get<Admin[]>(this.baseUrlAdmin).pipe(
       map(admins => {
-        // Busca un administrador con correo y contraseña coincidentes
         const admin = admins.find(a => a.email === email && a.password === password);
 
         if (admin) {
@@ -73,29 +54,32 @@ export class AuthService {
       }),
       catchError(() => {
         console.error('Error al obtener los administradores');
-        return of(null); // Manejo de errores
+        return of(null);
       })
     );
   }
 
-  /**
-   * Obtiene un usuario por su ID.
-   * @param id ID del usuario.
-   * @returns Un observable con el usuario.
-   */
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/${id}`);
   }
 
-  /**
-   * Retorna el estado de la sesión del usuario.
-   * @returns `true` si la sesión está iniciada, `false` en caso contrario.
-   */
+  getAdmins() {
+    const token = localStorage.getItem('token'); // Asume que el token se almacena localmente
+    const headers = new HttpHeaders({
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    });
+
+    return this.http.get('http://localhost:8080/admins', { headers });
+}
+
   getLogin(): boolean {
     return this.isLoggedIn;
   }
 
-  getProfile(email: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/profile/${email}`);
+  getProfile(): Observable<User> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<User>(`${this.baseUrl}/profile`, { headers });
   }
 }
