@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  private baseUrl = 'http://localhost:8080/companies';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser = this.currentUserSubject.asObservable();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   login(user:User):void{
     this.currentUserSubject.next(user)
@@ -18,6 +19,10 @@ export class UserService {
 
   logout():void{
     this.currentUserSubject.next(null)
+  }
+
+  getCompanyProfile(companyId: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${companyId}/profile`);
   }
 
 }

@@ -8,88 +8,45 @@ import { User } from '../../models/user';
   standalone: true,
   imports: [],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
 
-  user: User|null=null;
-  user_type:string=""
-  user_size_company:string=""
-  user_sector:string=""
-  user_book:string=""
+  user: User | null = null; // Objeto completo del usuario
+  user_type: string = ''; // Tipo de usuario (Jurídica/Natural)
+  user_size_company: string = ''; // Tamaño de la empresa
+  user_sector: string = ''; // Sector de la empresa
 
-  constructor(private router:Router, private userService:UserService){}
+  constructor(private router: Router, private userService: UserService) {}
 
   ngOnInit(): void {
+    // Suscribirse al observable del usuario actual
     this.userService.currentUser.subscribe({
-      next: user => {
-        this.user=user
+      next: (user) => {
+        if (user) {
+          this.user = user; // Asignar todo el objeto del usuario
+          this.user_type = this.toString(user.typeUser);
+          this.user_size_company = this.toString(user.sizeCompany);
+          this.user_sector = this.toString(user.sector);
+        }
+      },
+      error: (err) => {
+        console.error('Error al obtener el usuario:', err);
       }
-    })
-    this.setTypeUser(this.user)
-    this.setSizeCompany(this.user)
-    this.setSector(this.user)
-    this.setBook(this.user)
+    });
   }
 
-  setTypeUser(user:User|null):void{
-    if(user?.typeUser){
-      if(user.typeUser===1 || user.typeUser==="1"){
-        this.user_type="Natural"
-      }
-      if(user.typeUser===2 || user.typeUser==="2"){
-        this.user_type="Jurídica"
-      }
+  /**
+   * Convierte un valor mixto a cadena, manejando nulos y números.
+   */
+  private toString(value: string | number | null | undefined): string {
+    if (value === null || value === undefined) {
+      return 'No especificado';
     }
+    return value.toString();
   }
 
-  setSizeCompany(user:User|null):void{
-    if(user?.sizeCompany){
-      if(user.sizeCompany===1 || user.sizeCompany==="1"){
-        this.user_size_company="Micro"
-      }
-      if(user.sizeCompany===2 || user.sizeCompany==="2"){
-        this.user_size_company="Pequeña"
-      }
-      if(user.sizeCompany===3 || user.sizeCompany==="3"){
-        this.user_size_company="Mediana"
-      }
-      if(user.sizeCompany===4 || user.sizeCompany==="4"){
-        this.user_size_company="Grande"
-      }
-    }
+  goHome(): void {
+    this.router.navigateByUrl('/dashboard');
   }
-
-  setSector(user:User|null):void{
-    if(user?.sector){
-      if(user.sector===1 || user.sector==="1"){
-        this.user_sector="Agrícola"
-      }
-      if(user.sector===2 || user.sector==="2"){
-        this.user_sector="Industrial"
-      }
-      if(user.sector===3 || user.sector==="3"){
-        this.user_sector="Servicios"
-      }
-      if(user.sector===4 || user.sector==="4"){
-        this.user_sector="Construcción"
-      }
-    }
-  }
-
-  setBook(user:User|null):void{
-    if(user?.isBookDonwloaded!=null){
-      if(user.isBookDonwloaded===true){
-        this.user_book="Sí"
-      }
-      if(user.isBookDonwloaded===false){
-        this.user_book="No"
-      }
-  }
-  }
-
-  goHome(){
-    this.router.navigateByUrl("/dashboard")
-  }
-
 }
