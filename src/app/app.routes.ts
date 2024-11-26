@@ -17,6 +17,7 @@ import { FormComponent } from './components/form/form.component';
 
 
 export const routes: Routes = [
+    { path: 'companies/:id/profile', component: ProfileComponent },
     { path: 'dashboard', component: DashboardViewComponent, canActivate: [CanActivateUser],
         children: [
             {

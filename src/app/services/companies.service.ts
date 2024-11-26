@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class CompanyService {
   private apiUrl = 'http://localhost:8080/companies';
+  baseUrl: any;
 
   constructor(private http: HttpClient) {}
 
@@ -17,5 +18,9 @@ export class CompanyService {
     });
 
     return this.http.get(this.apiUrl, { headers });
+  }
+
+  getCompanyProfile(id: number): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}/profile`);
   }
 }

@@ -8,7 +8,7 @@ import { Admin } from '../models/admin';
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/companies'; // URL para usuarios
+  private baseUrl = 'http://localhost:8080/auth'; // URL para usuarios
   private baseUrlAdmin = 'http://localhost:8080/admins'; // URL para administradores
 
   isLoggedIn: boolean = false; // Indicador de sesión iniciada
@@ -22,10 +22,13 @@ export class AuthService {
 
   login(email: string, password: string): Observable<{ token: string; user: User } | null> {
     const payload = { email, password };
+    console.log(email,password)
     return this.http.post<{ token: string; user: User }>(`${this.baseUrl}/login`, payload).pipe(
       map(response => {
+        console.log(response.token, response.user)
         if (response && response.token) {
           console.log('Usuario autenticado:', response.user);
+
           return response;
         } else {
           console.log('Credenciales incorrectas');
@@ -40,10 +43,10 @@ export class AuthService {
   }
 
   loginAdmin(email: string, password: string): Observable<Admin | null> {
+    console.log(email,password)
     return this.http.get<Admin[]>(this.baseUrlAdmin).pipe(
       map(admins => {
         const admin = admins.find(a => a.email === email && a.password === password);
-
         if (admin) {
           console.log('Administrador encontrado:', admin);
           return admin;

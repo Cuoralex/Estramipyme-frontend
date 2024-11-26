@@ -1,41 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { User } from '../../models/user';
 import { CommonModule } from '@angular/common';
+import { CompanyService } from '../../services/companies.service'; // Asegúrate de tener este servicio creado
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [
-    CommonModule
-  ],
+  imports: [CommonModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.scss'
+  styleUrls: ['./profile.component.scss'], // Corregido: styleUrls en plural
 })
 export class ProfileComponent implements OnInit {
+  user: User | null = null;
+  user_type: string = '';
+  user_size_company: string = '';
+  user_sector: string = '';
+  user_book: string = '';
+  companyProfile: any = null;
+  errorMessage: string | null = null;
 
-  user: User|null=null;
-  user_type:string=""
-  user_size_company:string=""
-  user_sector:string=""
-  user_book:string=""
-  authService: any;
-
-  constructor(private router:Router, private userService:UserService){}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private companiesService: CompanyService // Inyectar servicio de compañías
+  ) {}
 
   ngOnInit(): void {
     // Recuperar el usuario almacenado en localStorage
     const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
-  
-    // Verificar si existe un email en el usuario almacenado
+    const companyId = this.route.snapshot.paramMap.get('id');
+
+    // Cargar datos del usuario si existe
     if (storedUser.email) {
-      // Llamar al servicio para obtener los datos del perfil
-      this.authService.getProfile(storedUser.email).subscribe({
+      this.userService.getCompanyProfile(storedUser.email).subscribe({
         next: (userData: User | null) => {
-          // Asignar los datos recuperados al usuario
           this.user = userData;
-  
+
           // Configurar los detalles del usuario
           this.setTypeUser(this.user);
           this.setSizeCompany(this.user);
@@ -43,75 +46,95 @@ export class ProfileComponent implements OnInit {
           this.setBook(this.user);
         },
         error: () => {
-          // Mostrar alerta en caso de error al cargar los datos
-          alert('Failed to load user data');
+          alert('Error al cargar los datos del usuario');
         },
       });
     } else {
-      // Manejar el caso en el que no hay un usuario almacenado en localStorage
-      alert('No user found in localStorage');
+      alert('No se encontró un usuario en el localStorage');
     }
-  }
-  
 
-  setTypeUser(user:User|null):void{
-    if(user?.typeUser){
-      if(user.typeUser===1 || user.typeUser==="1"){
-        this.user_type="Natural"
-      }
-      if(user.typeUser===2 || user.typeUser==="2"){
-        this.user_type="Jurídica"
-      }
-    }
-  }
-
-  setSizeCompany(user:User|null):void{
-    if(user?.sizeCompany){
-      if(user.sizeCompany===1 || user.sizeCompany==="1"){
-        this.user_size_company="Micro"
-      }
-      if(user.sizeCompany===2 || user.sizeCompany==="2"){
-        this.user_size_company="Pequeña"
-      }
-      if(user.sizeCompany===3 || user.sizeCompany==="3"){
-        this.user_size_company="Mediana"
-      }
-      if(user.sizeCompany===4 || user.sizeCompany==="4"){
-        this.user_size_company="Grande"
-      }
+    // Cargar perfil de la compañía si hay un ID válido
+    if (companyId) {
+      this.companiesService.getCompanyProfile(+companyId).subscribe({
+        next: (data) => {
+          this.companyProfile = data;
+          this.errorMessage = null;
+        },
+        error: () => {
+          this.errorMessage = 'No se pudo cargar el perfil de la compañía.';
+        },
+      });
     }
   }
 
-  setSector(user:User|null):void{
-    if(user?.sector){
-      if(user.sector===1 || user.sector==="1"){
-        this.user_sector="Agrícola"
-      }
-      if(user.sector===2 || user.sector==="2"){
-        this.user_sector="Industrial"
-      }
-      if(user.sector===3 || user.sector==="3"){
-        this.user_sector="Servicios"
-      }
-      if(user.sector===4 || user.sector==="4"){
-        this.user_sector="Construcción"
+  setTypeUser(user: User | null): void {
+    if (user?.typeUser) {
+      switch (user.typeUser) {
+        case 1:
+        case '1':
+          this.user_type = 'Natural';
+          break;
+        case 2:
+        case '2':
+          this.user_type = 'Jurídica';
+          break;
       }
     }
   }
 
-  setBook(user:User|null):void{
-    if(user?.isBookDonwloaded!=null){
-      if(user.isBookDonwloaded===true){
-        this.user_book="Sí"
+  setSizeCompany(user: User | null): void {
+    if (user?.sizeCompany) {
+      switch (user.sizeCompany) {
+        case 1:
+        case '1':
+          this.user_size_company = 'Micro';
+          break;
+        case 2:
+        case '2':
+          this.user_size_company = 'Pequeña';
+          break;
+        case 3:
+        case '3':
+          this.user_size_company = 'Mediana';
+          break;
+        case 4:
+        case '4':
+          this.user_size_company = 'Grande';
+          break;
       }
-      if(user.isBookDonwloaded===false){
-        this.user_book="No"
-      }
-  }
+    }
   }
 
-  goHome(){
-    this.router.navigateByUrl("/dashboard")
+  setSector(user: User | null): void {
+    if (user?.sector) {
+      switch (user.sector) {
+        case 1:
+        case '1':
+          this.user_sector = 'Agrícola';
+          break;
+        case 2:
+        case '2':
+          this.user_sector = 'Industrial';
+          break;
+        case 3:
+        case '3':
+          this.user_sector = 'Servicios';
+          break;
+        case 4:
+        case '4':
+          this.user_sector = 'Construcción';
+          break;
+      }
+    }
   }
 
+  setBook(user: User | null): void {
+    if (user?.isBookDonwloaded != null) {
+      this.user_book = user.isBookDonwloaded ? 'Sí' : 'No';
+    }
+  }
+
+  goHome(): void {
+    this.router.navigateByUrl('/dashboard');
+  }
 }
