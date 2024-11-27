@@ -10,7 +10,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ ReactiveFormsModule, CommonModule, NavbarComponent],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -24,10 +24,16 @@ export class LoginComponent {
 
   constructor(private authService: AuthService, private router: Router, private userService: UserService) {}
 
+  /**
+   * Método llamado al enviar el formulario de inicio de sesión.
+   */
   onSubmit() {
     this.login();
   }
 
+  /**
+   * Lógica para iniciar sesión.
+   */
   login() {
     const emailControl = this.loginForm.get('email');
     const passwordControl = this.loginForm.get('password');
@@ -37,57 +43,63 @@ export class LoginComponent {
       const password = passwordControl?.value ?? '';
 
       this.authService.login(email, password).subscribe({
-        next: response => {
+        next: (response) => {
           if (response && response.token) {
-            this.authService.isLoggedIn = true;
-            this.userService.login(response.user, response.token);
-            this.router.navigateByUrl("/dashboard");
+            this.handleSuccessfulLogin(response.user, response.token, "/dashboard");
           } else {
-            this.authService.loginAdmin(email, password).subscribe({
-              next: admin => {
-                if (admin) {
-                  this.authService.isLoggedIn = true;
-                  this.userService.login(admin, '');
-                  this.router.navigateByUrl("/dashboard-admin");
-                } else {
-                  this.showMessage('Correo y/o contraseña incorrectos. Por favor, intenta nuevamente.', 'error');
-                  this.setInvalidClass(emailControl, passwordControl);
-                }
-              },
-              error: error => {
-                console.error('Error al intentar iniciar sesión:', error);
-                this.showMessage('Ocurrió un error al intentar iniciar sesión. Por favor, intenta nuevamente.', 'error');
-                this.setInvalidClass(emailControl, passwordControl);
-              }
-            });
+            this.showMessage('Correo y/o contraseña incorrectos. Por favor, intenta nuevamente.', 'error');
+            this.setInvalidClass(emailControl, passwordControl);
           }
         },
-        error: error => {
+        error: (error) => {
           console.error('Error al intentar iniciar sesión:', error);
           this.showMessage('Ocurrió un error al intentar iniciar sesión. Por favor, intenta nuevamente.', 'error');
           this.setInvalidClass(emailControl, passwordControl);
         }
       });
     } else {
-      if (emailControl?.hasError('pattern')) {
-        this.showMessage('El correo debe contener un "@" válido.', 'error');
-      } else {
-        this.showMessage('Formulario inválido. Por favor, revisa los campos.', 'error');
-      }
-      this.setInvalidClass(emailControl, passwordControl);
+      this.handleInvalidForm(emailControl, passwordControl);
     }
   }
 
+  /**
+   * Lógica para manejar un inicio de sesión exitoso.
+   * @param user Usuario autenticado.
+   * @param token Token de autenticación.
+   * @param redirectTo Ruta a redirigir después del inicio de sesión.
+   */
+  handleSuccessfulLogin(user: any, token: string, redirectTo: string) {
+    console.log('Inicio de sesión exitoso:', user);
+    localStorage.setItem('token', token); // Guardar el token en el almacenamiento local
+    this.authService.isLoggedIn = true;
+    this.userService.login(user, token); // Informar al servicio de usuario sobre el inicio de sesión
+    this.router.navigateByUrl(redirectTo); // Redirigir al usuario
+  }
+
+  /**
+   * Manejo del formulario inválido.
+   */
+  handleInvalidForm(emailControl: AbstractControl<string | null> | null, passwordControl: AbstractControl<string | null> | null) {
+    this.showMessage('Formulario inválido. Por favor, revisa los campos.', 'error');
+    this.setInvalidClass(emailControl, passwordControl);
+  }
+
+  /**
+   * Marcar controles inválidos como tocados para mostrar mensajes de error.
+   */
   setInvalidClass(emailControl: AbstractControl<string | null> | null, passwordControl: AbstractControl<string | null> | null) {
     if (emailControl?.invalid) {
       emailControl.markAsTouched();
     }
-  
+
     if (passwordControl?.invalid) {
       passwordControl.markAsTouched();
     }
   }
 
+  /**
+   * Mostrar un mensaje en la interfaz.
+   */
   showMessage(message: string, type: 'success' | 'error') {
     const messageDiv = document.getElementById(type === 'success' ? 'message' : 'error-message');
     if (messageDiv) {
@@ -99,10 +111,16 @@ export class LoginComponent {
     }
   }
 
+  /**
+   * Verificar si la ruta actual es la de registro.
+   */
   isRegisterRoute(): boolean {
     return this.router.url === "/register";
   }
 
+  /**
+   * Redirigir a la página de registro.
+   */
   registrarse() {
     this.router.navigateByUrl("/register");
   }

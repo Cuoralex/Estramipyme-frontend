@@ -1,90 +1,59 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { User } from '../models/user';
-import { catchError, map, Observable, of } from 'rxjs';
-import { Admin } from '../models/admin';
+import { catchError, map, Observable, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/auth'; // URL para usuarios
-  private baseUrlAdmin = 'http://localhost:8080/admins'; // URL para administradores
-
-  isLoggedIn: boolean = false; // Indicador de sesión iniciada
-  apiUrl: any;
+  private readonly baseUrl = 'http://localhost:8080/auth';
+  httpClient: any;
 
   constructor(private http: HttpClient) {}
 
-  registerUser(userDetails: any): Observable<any> {
-    return this.http.post(this.baseUrl, userDetails);
-  }
-
-  login(email: string, password: string): Observable<{ token: string; user: User } | null> {
+  /**
+   * Autenticación de usuario
+   * @param email Correo del usuario
+   * @param password Contraseña del usuario
+   * @returns Observable con token y datos del usuario, o error
+   */
+  login(email: string, password: string): Observable<{ token: string; user: User | null } | null> {
     const payload = { email, password };
-    console.log(email,password)
-    return this.http.post<{ token: string; user: User }>(`${this.baseUrl}/login`, payload).pipe(
-      map(response => {
-        console.log(response.token, response.user)
-        if (response && response.token) {
-          console.log('Usuario autenticado:', response.user);
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-          return response;
-        } else {
-          console.log('Credenciales incorrectas');
-          return null;
+    return this.http.post(`${this.baseUrl}/login`, payload, { headers, responseType: 'text' }).pipe(
+      map((response: string) => {
+        // Comprobar si la respuesta contiene "Bearer" (es un token JWT)
+        if (response.trim().startsWith('Bearer')) {
+          // Si el token empieza con "Bearer", lo almacenamos directamente
+          console.log('Token recibido:', response);
+          localStorage.setItem('token', response);
+          return { token: response, user: null }; // Solo el token, sin usuario
+        }
+
+        // Si la respuesta no es un token JWT, intentamos parsearla como JSON
+        try {
+          const jsonResponse = JSON.parse(response);
+          if (jsonResponse?.token) {
+            console.log('Autenticación exitosa:', jsonResponse);
+            localStorage.setItem('token', jsonResponse.token);
+            return { token: jsonResponse.token, user: jsonResponse.user || null };
+          } else {
+            console.error('Formato de respuesta inválido:', jsonResponse);
+            return null;
+          }
+        } catch (error) {
+          console.error('Error al parsear la respuesta:', error);
+          throw new Error('Respuesta no válida del servidor.');
         }
       }),
-      catchError(() => {
-        console.error('Error al autenticar al usuario');
-        return of(null);
+      catchError((error: HttpErrorResponse) => {
+        console.error('Error al autenticar al usuario:', error.message);
+        return throwError(() => new Error('Error al autenticar. Verifique sus credenciales.'));
       })
     );
   }
 
-  loginAdmin(email: string, password: string): Observable<Admin | null> {
-    console.log(email,password)
-    return this.http.get<Admin[]>(this.baseUrlAdmin).pipe(
-      map(admins => {
-        const admin = admins.find(a => a.email === email && a.password === password);
-        if (admin) {
-          console.log('Administrador encontrado:', admin);
-          return admin;
-        } else {
-          console.log(
-            'No se encontró ningún administrador con el correo y contraseña especificados'
-          );
-          return null;
-        }
-      }),
-      catchError(() => {
-        console.error('Error al obtener los administradores');
-        return of(null);
-      })
-    );
-  }
-
-  getUser(id: number): Observable<User> {
-    return this.http.get<User>(`${this.baseUrl}/${id}`);
-  }
-
-  getAdmins() {
-    const token = localStorage.getItem('token'); // Asume que el token se almacena localmente
-    const headers = new HttpHeaders({
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-    });
-
-    return this.http.get('http://localhost:8080/admins', { headers });
-}
-
-  getLogin(): boolean {
-    return this.isLoggedIn;
-  }
-
-  getProfile(): Observable<User> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.get<User>(`${this.baseUrl}/profile`, { headers });
-  }
+  // Otros métodos (registro, perfil, logout, etc.)
 }

@@ -133,9 +133,6 @@ export class ProfileComponent implements OnInit {
       this.user_book = user.isBookDonwloaded ? 'Sí' : 'No';
     }
   }
-
-  goHome(): void {
-    this.router.navigateByUrl('/dashboard');
   goHome(): void {
     this.router.navigateByUrl('/dashboard');
   }
