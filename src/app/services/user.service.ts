@@ -2,16 +2,19 @@ import { Injectable } from '@angular/core';
 import { User } from '../models/user';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-
+  private baseUrl = 'http://localhost:8080/companies';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser = this.currentUserSubject.asObservable();
   private baseUrl = 'http://localhost:8080/companies';
 
+  constructor(private http: HttpClient) { }
   constructor(private http: HttpClient) { }
 
   login(user: User, token: string): void {

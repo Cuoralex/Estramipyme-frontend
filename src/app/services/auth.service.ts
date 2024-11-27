@@ -5,7 +5,7 @@ import { catchError, map, Observable, of } from 'rxjs';
 import { Admin } from '../models/admin';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private baseUrl = 'http://localhost:8080/auth'; // URL para usuarios
@@ -51,7 +51,9 @@ export class AuthService {
           console.log('Administrador encontrado:', admin);
           return admin;
         } else {
-          console.log('No se encontró ningún administrador con el correo y contraseña especificados');
+          console.log(
+            'No se encontró ningún administrador con el correo y contraseña especificados'
+          );
           return null;
         }
       }),

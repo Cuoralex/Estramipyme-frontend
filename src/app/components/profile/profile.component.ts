@@ -136,5 +136,7 @@ export class ProfileComponent implements OnInit {
 
   goHome(): void {
     this.router.navigateByUrl('/dashboard');
+  goHome(): void {
+    this.router.navigateByUrl('/dashboard');
   }
 }
