@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
@@ -8,86 +8,60 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './add-teacher-button.component.html',
-  styleUrls: ['./add-teacher-button.component.scss']
+  styleUrls: ['./add-teacher-button.component.scss'],
 })
-export class AddTeacherButtonComponent {
+export class AddTeacherButtonComponent implements OnInit {
   showForm = false;
   teacherForm: FormGroup;
-  teacherFound = false;
-  teacherId: number | null = null;
-  teacherName: string | null = null; 
   showErrorModal = false;
   showSuccessModal = false;
   errorMessage = '';
+  teacherName: string = '';
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
     this.teacherForm = this.fb.group({
-      id: [''],
-      email: ['', Validators.email]
+      name: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
     });
   }
 
-  searchTeacher() {
-    const id = this.teacherForm.get('id')?.value;
-    const email = this.teacherForm.get('email')?.value;
+  ngOnInit(): void {}
 
-    if (!id && !email) {
-      this.showErrorModal = true;
-      this.errorMessage = 'Debe ingresar un ID o un correo de profesor.';
-      return;
-    }
+  // Función para crear un profesor
+  createTeacher() {
+    if (this.teacherForm.valid) {
+      const { name, email, password } = this.teacherForm.value;
 
-    const searchCriteria = id ? `id=${id}` : `email=${email}`;
-
-    this.http.get(`https://estramipyme-api.vercel.app/teachers?${searchCriteria}`).subscribe({
-      next: (teachers: any) => {
-        if (teachers.length === 0) {
-          this.showErrorModal = true;
-          this.errorMessage = 'No existe el profesor.';
-          this.teacherFound = false;
-          this.teacherId = null;
-          this.teacherName = null;
-        } else {
-          this.teacherFound = true;
-          this.teacherId = teachers[0].id;
-          this.teacherName = teachers[0].name;  // Guardar el nombre del profesor
-        }
-      },
-      error: () => {
-        this.showErrorModal = true;
-        this.errorMessage = 'Error al buscar el profesor.';
-        this.teacherFound = false;
-        this.teacherId = null;
-        this.teacherName = null;
-      }
-    });
-  }
-
-  addTeacherToProject() {
-    if (this.teacherId !== null) {
-      this.http.patch(`https://estramipyme-api.vercel.app/teachers/${this.teacherId}`, { profesorParteProyecto: true }).subscribe({
-        next: () => {
+      // Realiza la solicitud HTTP para crear el profesor
+      this.http.post('http://localhost:8080/teachers', { name, email, password }).subscribe(
+        (response) => {
+          console.log('Profesor creado exitosamente:', response);
+          this.teacherName = name;
           this.showSuccessModal = true;
-          this.teacherFound = false;
-          this.teacherId = null;
-          this.teacherForm.reset();
+          this.showForm = false;
+          this.teacherForm.reset();  // Resetea el formulario
         },
-        error: () => {
-          alert('Error al agregar el profesor al proyecto');
+        (err) => {
+          console.error('Error al crear profesor:', err);
+          this.showErrorModal = true;
+          this.errorMessage = 'Hubo un error al crear el profesor.';
         }
-      });
+      );
+    } else {
+      this.showErrorModal = true;
+      this.errorMessage = 'Por favor, complete todos los campos correctamente.';
     }
   }
 
+  // Cerrar modal de error
   closeErrorModal() {
     this.showErrorModal = false;
     this.errorMessage = '';
   }
 
+  // Cerrar modal de éxito
   closeSuccessModal() {
     this.showSuccessModal = false;
-    this.teacherName = null;
   }
 }
-
-  

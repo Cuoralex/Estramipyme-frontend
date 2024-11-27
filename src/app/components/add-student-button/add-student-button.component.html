@@ -1,35 +1,75 @@
 <div class="p-4">
   <!-- Botón para mostrar/ocultar el formulario -->
-  <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="showForm = !showForm">Agregar Estudiante</button>
-  
-  <!-- Formulario de búsqueda -->
-  <form *ngIf="showForm" [formGroup]="studentForm" (ngSubmit)="searchStudent()" class="mt-4 space-y-4">
-    <div>
-      <label for="studentId" class="block text-sm font-medium text-gray-700">ID Estudiante:</label>
-      <input id="studentId" formControlName="id" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    </div>
-    <div>
-      <label for="studentEmail" class="block text-sm font-medium text-gray-700">Correo Estudiante:</label>
-      <input id="studentEmail" formControlName="email" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-    </div>
-    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Buscar</button>
-  </form>
+  <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="showForm = !showForm">
+    Gestionar Estudiantes
+  </button>
 
-  <!-- Formulario de asignación -->
-  <div *ngIf="showAssignSection" class="mt-6 space-y-4">
-    <h3 class="text-lg font-medium text-gray-900">Asignar Estudiante</h3>
-    <form [formGroup]="assignForm" (ngSubmit)="assignToProfessorAndCompany()" class="space-y-4">
-      <div>
-        <label for="professor" class="block text-sm font-medium text-gray-700">Profesor:</label>
-        <input id="professor" formControlName="professor" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-      </div>
-      <div>
-        <label for="company" class="block text-sm font-medium text-gray-700">Compañía:</label>
-        <input id="company" formControlName="company" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-      </div>
-      <button type="submit" class="bg-yellow-500 text-white px-4 py-2 rounded">Asignar</button>
-    </form>
-  </div>
+  <!-- Formulario para agregar estudiante -->
+  <form *ngIf="showForm" [formGroup]="studentForm" (ngSubmit)="createStudent()" class="mt-4 space-y-4">
+    <div>
+      <label for="companyId" class="block text-sm font-medium text-gray-700">ID Compañía:</label>
+      <input
+        id="companyId"
+        formControlName="companyId"
+        type="number"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="teacherId" class="block text-sm font-medium text-gray-700">ID Profesor:</label>
+      <input
+        id="teacherId"
+        formControlName="teacherId"
+        type="number"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="name" class="block text-sm font-medium text-gray-700">Nombre:</label>
+      <input
+        id="name"
+        formControlName="name"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico:</label>
+      <input
+        id="email"
+        formControlName="email"
+        type="email"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700">Contraseña:</label>
+      <input
+        id="password"
+        formControlName="password"
+        type="password"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="address" class="block text-sm font-medium text-gray-700">Dirección:</label>
+      <input
+        id="address"
+        formControlName="address"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <div>
+      <label for="phone" class="block text-sm font-medium text-gray-700">Teléfono:</label>
+      <input
+        id="phone"
+        formControlName="phone"
+        class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+      />
+    </div>
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">
+      Crear Estudiante
+    </button>
+  </form>
 
   <!-- Modal de Error -->
   <div *ngIf="showErrorModal" class="fixed z-10 inset-0 overflow-y-auto">
@@ -58,9 +98,7 @@
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
       <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
         <div class="bg-white p-4">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">Estudiante "{{ studentName }}" agregado exitosamente al proyecto.</h3>
-          <p class="text-sm mt-2 text-gray-700">Profesor Asignado: {{ assignedProfessor }}</p>
-          <p class="text-sm text-gray-700">Compañía Asignada: {{ assignedCompany }}</p>
+          <h3 class="text-lg leading-6 font-medium text-gray-900">Estudiante creado exitosamente.</h3>
           <div class="mt-4 flex justify-center">
             <button class="bg-blue-500 text-white px-4 py-2 rounded" (click)="closeSuccessModal()">Cerrar</button>
           </div>
@@ -69,6 +107,3 @@
     </div>
   </div>
 </div>
-
-
-  
