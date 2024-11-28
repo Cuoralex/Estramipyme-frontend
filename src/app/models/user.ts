@@ -3,9 +3,9 @@ export interface User {
   name?: string | null | undefined;
   email?: string | null | undefined;
   password?: string | null | undefined;
-  typeUser?: string | number;
-  sizeCompany?: string | number;
-  sector?: string | number;
+  typeUser?: string | null| number;
+  sizeCompany?: string | null | number;
+  sector?: string | null| number;
   registerDate?: string;
   isBookDonwloaded?: boolean | undefined;
   isTestDone?: boolean;
